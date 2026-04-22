@@ -1,0 +1,207 @@
+﻿<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>娱乐圈皇族模拟器</title>
+    <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="page">
+    <div class="topbar">
+      <div class="topbar-left">
+        <div class="brand">
+          <strong>娱乐圈皇族模拟器</strong>
+          <span class="small">单文件网页试玩版 · 自动存档 · 可导入导出</span>
+        </div>
+      </div>
+      <div class="topbar-right">
+        <span class="chip"><strong id="turnChip">第 1 回合</strong><span id="timeChip">时间未开始</span></span>
+        <button class="btn" id="newGameBtn">重新开局</button>
+        <button class="btn" id="saveBtn">立即存档</button>
+        <button class="btn" id="exportBtn">导出存档</button>
+        <button class="btn" id="importBtn">导入存档</button>
+      </div>
+    </div>
+
+    <section class="hero">
+      <div class="tag-row">
+        <span class="tag">🎬 现代架空</span>
+        <span class="tag">👑 资源咖主角</span>
+        <span class="tag">📰 选秀起点</span>
+        <span class="tag">📱 适合转发试玩</span>
+      </div>
+      <h1>偏爱来得太早，所有人都看见了。</h1>
+      <p>这是一版可以直接给别人玩的最终网页：填写主角自设后即可进入剧情，每回合只推进一件事，世界会持续变化，舆论、资源、好感和状态会跟着你的选择一起波动。不接后端，双击即可打开，浏览器会自动保存进度。</p>
+      <div class="hero-grid">
+        <div class="note">
+          <strong>玩法说明</strong>
+          <div class="small" style="margin-top: 8px;">先生成开局，再从当前事件里选择一项行动，或者自己输入行动。每回合会记录结果、刷新舆论、推进时间并生成下一件正在发生的事。</div>
+          <div class="status-line">
+            <span class="status-pill">不会自动替玩家作决定</span>
+            <span class="status-pill">不会突然结局</span>
+            <span class="status-pill">日常向慢节奏推进</span>
+          </div>
+        </div>
+        <div class="note">
+          <strong>体验优化</strong>
+          <div class="small" style="margin-top: 8px;">已补齐自动存档、导入导出、状态反馈、持续回合刷新、移动端排版与空输入提示。给别人试玩时，不需要任何安装步骤。</div>
+        </div>
+      </div>
+    </section>
+
+    <div class="layout">
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>✨ 主角设定</h2>
+            <div class="badge-list">
+              <span class="badge">可全部留空随机</span>
+              <span class="badge">初次进入建议先生成</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="form-grid">
+              <label class="field">
+                <span class="label">姓名</span>
+                <input class="input" id="nameInput" placeholder="例如：闻夏">
+              </label>
+              <label class="field">
+                <span class="label">年龄</span>
+                <input class="input" id="ageInput" type="number" min="16" max="35" placeholder="16-35">
+              </label>
+              <label class="field">
+                <span class="label">性别</span>
+                <select class="select" id="genderInput">
+                  <option value="">随机</option>
+                  <option value="女">女</option>
+                  <option value="男">男</option>
+                </select>
+              </label>
+              <label class="field">
+                <span class="label">当前心态</span>
+                <select class="select" id="toneInput">
+                  <option value="随机">随机</option>
+                  <option value="野心型">野心型</option>
+                  <option value="玩票型">玩票型</option>
+                  <option value="事业型">事业型</option>
+                  <option value="花瓶型">花瓶型</option>
+                </select>
+              </label>
+              <label class="field field-full">
+                <span class="label">其它设定</span>
+                <input class="input" id="extraInput" placeholder="例如：镜头恐惧、和家里关系紧张、特别想一夜爆红">
+              </label>
+            </div>
+            <div class="action-row" style="margin-top: 16px;">
+              <button class="btn btn-primary" id="generateBtn">🎲 生成开局</button>
+              <button class="btn" id="rerollBtn">🔄 保留姓名重开</button>
+              <button class="btn btn-danger" id="clearBtn">清空本地存档</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>📖 当前剧情</h2>
+            <div class="badge-list">
+              <span class="badge" id="storyTimeBadge">时间未开始</span>
+              <span class="badge" id="chapterBadge">序章</span>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="story" id="storyBlock"></div>
+            <div class="divider"></div>
+            <div class="event-box">
+              <div class="event-title" id="eventTitle">【事件】等待生成</div>
+              <div class="story" id="eventDesc"></div>
+            </div>
+            <div class="option-list" id="optionList" style="margin-top: 14px;"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>✍️ 自定义行动与时间跳转</h2>
+          </div>
+          <div class="panel-body">
+            <div class="dual-grid">
+              <div class="card">
+                <label class="field field-full">
+                  <span class="label">本回合你想主动做什么</span>
+                  <textarea class="textarea" id="customActionInput" placeholder="例如：我先和经纪人单独聊一聊，问她公司到底打算怎么捧我。"></textarea>
+                </label>
+                <div class="action-row">
+                  <button class="btn btn-primary" id="customActionBtn">执行自定义行动</button>
+                </div>
+              </div>
+              <div class="card">
+                <label class="field field-full">
+                  <span class="label">时间跳转</span>
+                  <input class="input" id="timeJumpInput" placeholder="例如：三天后晚上，节目第一次前采之前">
+                </label>
+                <div class="action-row">
+                  <button class="btn" id="timeJumpBtn">推进时间</button>
+                </div>
+                <div class="small" style="margin-top: 10px;">可识别“明天”“三天后”“一周后”“半个月后”“一个月后”等常见表达。</div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div class="stack">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>🌙 你的状态</h2>
+          </div>
+          <div class="panel-body">
+            <div class="triple-grid" id="coreStatusGrid"></div>
+            <div class="divider"></div>
+            <div class="stats-grid" id="quickStats"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>👤 主角面板</h2>
+          </div>
+          <div class="panel-body" id="profilePanel"></div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>🧍 已登场人物</h2>
+          </div>
+          <div class="panel-body">
+            <div class="npc-list" id="npcList"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>📰 当前舆论</h2>
+          </div>
+          <div class="panel-body">
+            <div class="feed-list" id="feedList"></div>
+          </div>
+        </section>
+
+        <section class="panel">
+          <div class="panel-header">
+            <h2>🗂️ 回合记录</h2>
+          </div>
+          <div class="panel-body">
+            <div class="log-list" id="logList"></div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="./app.js"></script>
+</body>
+</html>
+
