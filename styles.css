@@ -162,7 +162,7 @@
     .panel-header h2 { font-size: 18px; letter-spacing: 1px; }
     .panel-body { padding: 18px 20px 20px; }
 
-    .note, .card, .feed-item, .log-item, .npc-card, .status-card, .stat, .event-box {
+    .note, .card, .feed-item, .log-item, .npc-card, .status-card, .stat, .event-box, .summary-box, .progress-step {
       border: 1px solid rgba(255, 255, 255, 0.08);
       border-radius: 18px;
       background: rgba(255, 255, 255, 0.04);
@@ -257,6 +257,41 @@
     }
 
     .event-title { font-size: 20px; font-weight: 700; margin-bottom: 10px; }
+
+    .summary-box {
+      background:
+        linear-gradient(135deg, rgba(255, 142, 176, 0.08), rgba(255, 227, 141, 0.05)),
+        rgba(255, 255, 255, 0.04);
+    }
+
+    .progress-track {
+      display: grid;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .progress-step {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      align-items: center;
+      padding: 12px 14px;
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .progress-step strong {
+      font-size: 14px;
+    }
+
+    .progress-step.done {
+      border-color: rgba(255, 227, 141, 0.28);
+      background: rgba(255, 227, 141, 0.08);
+    }
+
+    .progress-step.current {
+      border-color: rgba(145, 236, 226, 0.28);
+      background: rgba(145, 236, 226, 0.07);
+    }
 
     .option-btn {
       width: 100%;

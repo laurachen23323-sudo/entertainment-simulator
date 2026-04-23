@@ -17,6 +17,7 @@
       </div>
       <div class="topbar-right">
         <span class="chip"><strong id="turnChip">第 1 回合</strong><span id="timeChip">时间未开始</span></span>
+        <span class="chip"><strong id="progressChip">主线 0%</strong><span id="phaseChip">展示版</span></span>
         <button class="btn" id="newGameBtn">重新开局</button>
         <button class="btn" id="saveBtn">立即存档</button>
         <button class="btn" id="exportBtn">导出存档</button>
@@ -151,6 +152,15 @@
       </div>
 
       <div class="stack">
+        <section class="panel">
+          <div class="panel-header">
+            <h2>🎞️ 主线进度</h2>
+          </div>
+          <div class="panel-body">
+            <div id="summaryPanel"></div>
+          </div>
+        </section>
+
         <section class="panel">
           <div class="panel-header">
             <h2>🌙 你的状态</h2>
